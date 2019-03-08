@@ -60,7 +60,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         
         guard let indexPath = currentOrderListItems.indexPathForRow(at: cgPoint) else { return }
         
-        if sender.state == UIGestureRecognizerState.ended {
+        if sender.state == UIGestureRecognizer.State.ended {
             if let data = store?.currentOrder?.items[indexPath.row] {
                 store?.currentOrder?.removeLineItem(data)
             }
@@ -344,7 +344,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         } else {
             DispatchQueue.main.async {[weak self] in
                 guard let strongSelf = self else { return }
-                let alert = UIAlertController(title: "", message: "Reader not connected", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "", message: "Reader not connected", preferredStyle: UIAlertController.Style.alert)
                 
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                 }))
@@ -385,7 +385,7 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         } else {
             DispatchQueue.main.async {[weak self] in
                 guard let strongSelf = self else { return }
-                let alert = UIAlertController(title: "", message: "Reader not connected", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "", message: "Reader not connected", preferredStyle: UIAlertController.Style.alert)
                 
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                 }))

@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
     fileprivate let PAIRING_AUTH_TOKEN_KEY:String = "PAIRING_AUTH_TOKEN"
     
     
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         store = POSStore()
         store?.availableItems.append(POSItem(id: "1", name: "Cheeseburger", price: 579, taxRate: 0.075, taxable: true))
         store?.availableItems.append(POSItem(id: "2", name: "Hamburger", price: 529, taxRate: 0.075, taxable: true))
@@ -49,7 +49,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, PairingDeviceConfiguratio
         if let tkn = UserDefaults.standard.string( forKey: PAIRING_AUTH_TOKEN_KEY) {
             token = tkn
         }
-
+        
         return true
     }
     

@@ -234,7 +234,7 @@ class CloverGoConnectorListener : CloverConnectorListener, ICloverGoConnectorLis
         while ((topController.presentedViewController) != nil) {
             topController = topController.presentedViewController!
         }
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
         for paymentMode in paymentModes {
             let paymentAction = UIAlertAction(title: paymentMode.toString(), style: .default, handler: { (action: UIAlertAction!) in
                 ((UIApplication.shared.delegate as! AppDelegate).cloverConnector as? CloverGoConnector)?.selectPaymentMode(paymentMode: paymentMode)

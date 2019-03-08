@@ -187,8 +187,8 @@ extension PrintTestViewController: UITableViewDataSource, UITableViewDelegate {
 }
 
 extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let pickedImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+    private func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+        if let pickedImage = info[.originalImage] as? UIImage {
             self.spinner.startAnimating()
             UIApplication.shared.isIdleTimerDisabled = true
             
@@ -199,7 +199,7 @@ extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigation
                         self?.spinner.stopAnimating()
                         UIApplication.shared.isIdleTimerDisabled = false
                     }
-
+                    
                     return
                 }
                 
@@ -223,7 +223,7 @@ extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigation
     /// Resizes an image to fit within CloverConnector.MAX_PAYLOAD_SIZE
     func resizeImage(image:UIImage) -> UIImage {
         var scaledImage = image
-        guard var scaledData = UIImagePNGRepresentation(image) else { return image }
+        guard var scaledData = image.pngData() else { return image }
         guard let cloverConnector = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector else { return image }
         debugPrint("Start Size: " + String(describing: scaledImage.size))
         while scaledData.count > cloverConnector.MAX_PAYLOAD_SIZE {
@@ -235,7 +235,7 @@ extension PrintTestViewController: UIImagePickerControllerDelegate, UINavigation
             scaledImage.draw(in: CGRect(origin: CGPoint(x: 0, y: 0), size: newSize))
             guard let newImage = UIGraphicsGetImageFromCurrentImageContext() else { return scaledImage }
             scaledImage = newImage
-            guard let newData = UIImagePNGRepresentation(scaledImage) else { return scaledImage }
+            guard let newData = scaledImage.pngData() else { return scaledImage }
             scaledData = newData
             UIGraphicsEndImageContext()
         }

@@ -24,8 +24,8 @@ class OfflineTxViewController: UIViewController, UITableViewDelegate, UITableVie
         
         refreshControl.tintColor = UIColor.darkGray
         let refreshTextAttributes = [
-            NSAttributedStringKey.font : UIFont.boldSystemFont(ofSize: 18)
-            ] as [NSAttributedStringKey : Any]
+            NSAttributedString.Key.font : UIFont.boldSystemFont(ofSize: 18)
+            ] as [NSAttributedString.Key : Any]
         refreshControl.attributedTitle = NSAttributedString(string: "Refreshing Offline Transactions", attributes: refreshTextAttributes)
         refreshControl.addTarget(self, action: #selector(refresh(_:)), for: .valueChanged)
         if #available(iOS 10.0, *) {
@@ -159,14 +159,14 @@ class OfflineTxViewController: UIViewController, UITableViewDelegate, UITableVie
 
 extension NSMutableAttributedString {
     @discardableResult func bold(_ text: String) -> NSMutableAttributedString {
-        let attrs: [NSAttributedStringKey: Any] = [.font: UIFont.boldSystemFont(ofSize: 17)]
+        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.boldSystemFont(ofSize: 17)]
         let boldString = NSMutableAttributedString(string:text, attributes: attrs)
         append(boldString)
         return self
     }
     
     @discardableResult func normal(_ text: String) -> NSMutableAttributedString {
-        let attrs: [NSAttributedStringKey: Any] = [.font: UIFont.systemFont(ofSize: 14)]
+        let attrs: [NSAttributedString.Key: Any] = [.font: UIFont.systemFont(ofSize: 14)]
         let normalString = NSMutableAttributedString(string:text, attributes: attrs)
         append(normalString)
         return self

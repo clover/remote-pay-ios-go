@@ -1,0 +1,57 @@
+PODS:
+  - Alamofire (4.7.0)
+  - CloverGoSDK (3.2.1):
+    - Alamofire (= 4.7)
+    - ObjectMapper (= 3.1)
+    - RealmSwift (= 3.5.0)
+  - GoConnector (3.2.1):
+    - CloverGoSDK (= 3.2.1)
+    - ObjectMapper (= 3.1)
+    - Starscream (= 2.1.1)
+    - SwiftyJSON (= 3.1.4)
+  - ObjectMapper (3.1.0)
+  - Realm (3.5.0):
+    - Realm/Headers (= 3.5.0)
+  - Realm/Headers (3.5.0)
+  - RealmSwift (3.5.0):
+    - Realm (= 3.5.0)
+  - Starscream (2.1.1)
+  - SwiftyJSON (3.1.4)
+
+DEPENDENCIES:
+  - GoConnector (= 3.2.1)
+  - Starscream (from `https://github.com/clover/Starscream.git`, branch `queuePriority`)
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - CloverGoSDK
+    - GoConnector
+    - ObjectMapper
+    - Realm
+    - RealmSwift
+    - SwiftyJSON
+
+EXTERNAL SOURCES:
+  Starscream:
+    :branch: queuePriority
+    :git: https://github.com/clover/Starscream.git
+
+CHECKOUT OPTIONS:
+  Starscream:
+    :commit: e5d64b3fbb25c43e81476e5bddff37d030892efd
+    :git: https://github.com/clover/Starscream.git
+
+SPEC CHECKSUMS:
+  Alamofire: 907e0a98eb68cdb7f9d1f541a563d6ac5dc77b25
+  CloverGoSDK: 38274c7b2ed899a4dce7f43319aa5ddf1b3170c5
+  GoConnector: 610f20a80b3becafa2182cd6c7183cc6a30dd13d
+  ObjectMapper: 20505058f54e5c3ca69e1d6de9897d152a5369a6
+  Realm: 0378021c424e4e2bd6a0e63b27881e929d9b9ad1
+  RealmSwift: 3322562622fda2ad596985ead4d8d8be30cf838c
+  Starscream: 087670fe088bb12c04398fc343442a4b9eb96b86
+  SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
+
+PODFILE CHECKSUM: 67f6147e18077ab7004d13147833bd85cbbcbebc
+
+COCOAPODS: 1.5.3

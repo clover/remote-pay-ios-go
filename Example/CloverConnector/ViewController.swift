@@ -138,7 +138,7 @@ class ViewController: UIViewController {
     @IBAction func action_CloverGoButton(sender: AnyObject)
     {
         FLAGS.isCloverGoMode = true
-        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertControllerStyle.alert)
+        let alert = UIAlertController(title: nil, message: nil, preferredStyle: UIAlertController.Style.alert)
         let reader350Action = UIAlertAction(title: "Demo Mode", style: .default, handler: { (action: UIAlertAction!) in
             self.selectDemoMode()
         })

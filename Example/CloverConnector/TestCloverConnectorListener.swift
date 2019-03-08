@@ -75,12 +75,12 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
             viewController?.label.text = "PreAuth Success!"
             lastPAResponse = preAuthResponse // so we can do tip, refund and void after capture..
             
-            let alert = UIAlertController(title: nil, message: "Would you like to capture for $25.00?", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: {(action:UIAlertAction) in
+            let alert = UIAlertController(title: nil, message: "Would you like to capture for $25.00?", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: {(action:UIAlertAction) in
                 let cpar = CapturePreAuthRequest(amount: 2500, paymentId: (preAuthResponse.payment?.id)!)
                 self.cloverConnector?.capturePreAuth(cpar)
             }))
-            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: {(action:UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: {(action:UIAlertAction) in
                 
             }))
 
@@ -125,15 +125,15 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
                 let lastChallenge = request.challenges?.last {
                 for challenge in challenges {
                     
-                    let alert = UIAlertController(title: "Verify Payment", message: challenge.message, preferredStyle: UIAlertControllerStyle.alert)
-                    alert.addAction(UIAlertAction(title: "Accept", style: UIAlertActionStyle.default, handler: {(action:UIAlertAction) in
+                    let alert = UIAlertController(title: "Verify Payment", message: challenge.message, preferredStyle: UIAlertController.Style.alert)
+                    alert.addAction(UIAlertAction(title: "Accept", style: UIAlertAction.Style.default, handler: {(action:UIAlertAction) in
                         // do nothing, unless this is the last challenge
                         
                         if lastChallenge === challenge {
                             self?.cloverConnector?.acceptPayment(payment)
                         }
                     }))
-                    alert.addAction(UIAlertAction(title: "Reject", style: UIAlertActionStyle.cancel, handler: {(action:UIAlertAction) in
+                    alert.addAction(UIAlertAction(title: "Reject", style: UIAlertAction.Style.cancel, handler: {(action:UIAlertAction) in
                         self?.cloverConnector?.rejectPayment(payment, challenge: challenge)
                     }))
                     self?.viewController?.present(alert, animated: true, completion: nil)
@@ -182,13 +182,13 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
     
     fileprivate func promptForTip(_ orderId:String, paymentId:String) {
         DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "Would you like to add a $3.00 tip?", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { [weak self] (action:UIAlertAction) in
+            let alert = UIAlertController(title: nil, message: "Would you like to add a $3.00 tip?", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: { [weak self] (action:UIAlertAction) in
                 let tar = TipAdjustAuthRequest(orderId: orderId, paymentId: paymentId, tipAmount: 300)
                 self?.lastTARequest = tar // so we can do refund and void later
                 self?.cloverConnector?.tipAdjustAuth(tar)
             }))
-            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: { [weak self] (action:UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: { [weak self] (action:UIAlertAction) in
                 self?.promptForRefundAndVoid(orderId, paymentId:paymentId)
             }))
             self?.viewController?.present(alert, animated: true, completion: nil)
@@ -197,18 +197,18 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
 
     fileprivate func promptForRefundAndVoid(_ orderId:String, paymentId:String) {
         DispatchQueue.main.async { [weak self] in
-            let alert = UIAlertController(title: nil, message: "Would you like to refund the payment?", preferredStyle: UIAlertControllerStyle.alert)
-            alert.addAction(UIAlertAction(title: "Full", style: UIAlertActionStyle.default, handler: { [weak self] (action:UIAlertAction) in
+            let alert = UIAlertController(title: nil, message: "Would you like to refund the payment?", preferredStyle: UIAlertController.Style.alert)
+            alert.addAction(UIAlertAction(title: "Full", style: UIAlertAction.Style.default, handler: { [weak self] (action:UIAlertAction) in
                 let rpr = RefundPaymentRequest(orderId: orderId, paymentId: paymentId, fullRefund: true)
                 self?.cloverConnector?.refundPayment(rpr)
                 return
             }))
-            alert.addAction(UIAlertAction(title: "Partial", style: UIAlertActionStyle.default, handler: { [weak self] (action:UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "Partial", style: UIAlertAction.Style.default, handler: { [weak self] (action:UIAlertAction) in
                 let rpr = RefundPaymentRequest(orderId: orderId, paymentId: paymentId, amount: 500)
                 self?.cloverConnector?.refundPayment(rpr)
                 return
             }))
-            alert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: { [weak self] (action:UIAlertAction) in
+            alert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: { [weak self] (action:UIAlertAction) in
                 self?.promptForVoid(orderId, paymentId:paymentId)
                 return
             }))
@@ -219,13 +219,13 @@ class TestCloverConnectorListener : DefaultCloverConnectorListener {
     
     fileprivate func promptForVoid(_ orderId:String, paymentId:String) {
         DispatchQueue.main.async { [weak self] in
-            let voidAlert = UIAlertController(title: nil, message: "Would you like to void the payment?", preferredStyle: UIAlertControllerStyle.alert)
-            voidAlert.addAction(UIAlertAction(title: "Yes", style: UIAlertActionStyle.default, handler: { [weak self] (action:UIAlertAction) in
+            let voidAlert = UIAlertController(title: nil, message: "Would you like to void the payment?", preferredStyle: UIAlertController.Style.alert)
+            voidAlert.addAction(UIAlertAction(title: "Yes", style: UIAlertAction.Style.default, handler: { [weak self] (action:UIAlertAction) in
                 let vpr = VoidPaymentRequest(orderId: orderId, paymentId: paymentId, voidReason: .USER_CANCEL)
                 self?.cloverConnector?.voidPayment(vpr)
                 
             }))
-            voidAlert.addAction(UIAlertAction(title: "No", style: UIAlertActionStyle.cancel, handler: nil))
+            voidAlert.addAction(UIAlertAction(title: "No", style: UIAlertAction.Style.cancel, handler: nil))
             self?.viewController?.present(voidAlert, animated: true, completion: nil)
         }
     }

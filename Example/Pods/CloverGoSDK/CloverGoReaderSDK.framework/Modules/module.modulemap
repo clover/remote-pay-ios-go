@@ -1,0 +1,11 @@
+framework module CloverGoReaderSDK {
+  umbrella header "CloverGoReaderSDK.h"
+
+  export *
+  module * { export * }
+}
+
+module CloverGoReaderSDK.Swift {
+    header "CloverGoReaderSDK-Swift.h"
+    requires objc
+}

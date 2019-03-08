@@ -42,7 +42,7 @@ class SignatureCaptureView: UIView
         addGestureRecognizer(pan)
         gesture = UILongPressGestureRecognizer(target: self, action: #selector(self.erase))
         internalPaths = [NSMutableArray]()
-        self.accessibilityTraits = UIAccessibilityTraitAllowsDirectInteraction
+        self.accessibilityTraits = UIAccessibilityTraits.allowsDirectInteraction
         isAccessibilityElement = true
         accessibilityLabel = "Sign with your finger"
     }

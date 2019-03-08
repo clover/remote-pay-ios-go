@@ -1,0 +1,6 @@
+framework module GoConnector {
+  umbrella header "GoConnector-umbrella.h"
+
+  export *
+  module * { export * }
+}

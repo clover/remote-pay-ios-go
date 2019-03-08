@@ -47,7 +47,7 @@ public class VaultCardViewController:UIViewController, UITableViewDataSource
         
         var cell =  tableView.dequeueReusableCell(withIdentifier: "VCCell")
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "VCCell")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: "VCCell")
         }
         
         if let vals = getStore()?.vaultedCards,

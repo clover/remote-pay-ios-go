@@ -41,7 +41,7 @@ class OAuthViewController: UIViewController, UIWebViewDelegate {
         webViewForOAuth.loadRequest(request)
     }
     
-    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
+    private func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         if (request.url?.host == "oauthresult") {
             extractParametersForRestCall(url: (request.url)!)
         }

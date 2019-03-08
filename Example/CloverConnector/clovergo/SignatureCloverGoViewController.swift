@@ -29,7 +29,7 @@ class SignatureCloverGoViewController: UIViewController, SignatureViewDelegate {
     func setSigningBox() {
         let x = CGFloat((self.signLabel?.frame.origin.x)!)
         var y = CGFloat((self.signLabel?.frame.origin.y)!)
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && UIScreen.main.traitCollection.userInterfaceIdiom == .phone{
+        if UIDevice.current.orientation.isLandscape && UIScreen.main.traitCollection.userInterfaceIdiom == .phone{
             y = y - 100
         }
         else{
@@ -43,7 +43,7 @@ class SignatureCloverGoViewController: UIViewController, SignatureViewDelegate {
         self.signingBox.enableEraseSignatureOnLongPress(enable: true)
         var frame = self.signingBox.frame
         frame.origin.y = frame.origin.y + frame.size.height
-        if UIDeviceOrientationIsLandscape(UIDevice.current.orientation) && UIScreen.main.traitCollection.userInterfaceIdiom == .phone{
+        if UIDevice.current.orientation.isLandscape && UIScreen.main.traitCollection.userInterfaceIdiom == .phone{
             frame.origin.y = frame.origin.y + 5
         }
         else{
@@ -61,8 +61,8 @@ class SignatureCloverGoViewController: UIViewController, SignatureViewDelegate {
         self.signingBox.layer.masksToBounds = true
         self.view.addSubview(self.signingBox)
         self.view.addSubview(self.doneButton)
-        self.view.bringSubview(toFront: self.signingBox)
-        self.view.bringSubview(toFront: self.doneButton)
+        self.view.bringSubviewToFront(self.signingBox)
+        self.view.bringSubviewToFront(self.doneButton)
         self.doneButton.isHidden = true
     }
     

@@ -27,7 +27,7 @@ class MiscViewController : UIViewController, UINavigationControllerDelegate {
             DispatchQueue.main.async {[weak self] in
                 guard let strongSelf = self else { return }
                 strongSelf.view.isHidden = true
-                let alert = UIAlertController(title: "", message: "Not supported with CloverGo Connector", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "", message: "Not supported with CloverGo Connector", preferredStyle: UIAlertController.Style.alert)
                 
                 alert.addAction(UIAlertAction(title: "Ok", style: .default, handler: { (action: UIAlertAction!) in
                     strongSelf.navigationController?.popViewController(animated: true)

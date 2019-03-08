@@ -28,16 +28,16 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
     override func viewDidAppear(_ animated: Bool) {
         getStore()?.addStoreListener(self)
         
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIKeyboardWillShow, object: nil, queue: OperationQueue.main, using: {[weak self] notification in
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: OperationQueue.main, using: {[weak self] notification in
             guard let strongSelf = self else { return }
             if strongSelf.refundAmount.isFirstResponder {
-                strongSelf.view.window?.frame.origin.y = -1 * ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height ?? 0)
+                strongSelf.view.window?.frame.origin.y = -1 * ((notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height ?? 0)
             }
         })
-        NotificationCenter.default.addObserver(forName: Notification.Name.UIKeyboardWillHide, object: nil, queue: OperationQueue.main, using: {[weak self] notification in
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: OperationQueue.main, using: {[weak self] notification in
             guard let strongSelf = self else { return }
             if strongSelf.view.window?.frame.origin.y != 0 {
-                strongSelf.view.window?.frame.origin.y += ((notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height ?? 0)
+                strongSelf.view.window?.frame.origin.y += ((notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height ?? 0)
             }
         })
         (UIApplication.shared.delegate as? AppDelegate)?.cloverConnectorListener?.viewController = self
@@ -46,8 +46,8 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
     override func viewDidDisappear(_ animated: Bool) {
         getStore()?.removeStoreListener(self)
         
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: Notification.Name.UIKeyboardWillHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
     
     deinit {
@@ -69,7 +69,7 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
 
     
     fileprivate func getKeyboardHeight(_ notification: Notification) -> CGFloat? {
-        return (notification.userInfo?[UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
+        return (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -80,7 +80,7 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
         
         var cell =  manualRefundsTable.dequeueReusableCell(withIdentifier: "MRCell")
         if cell == nil {
-            cell = UITableViewCell(style: UITableViewCellStyle.value1, reuseIdentifier: "MRCell")
+            cell = UITableViewCell(style: UITableViewCell.CellStyle.value1, reuseIdentifier: "MRCell")
         }
         
         if let refunds = getStore()?.manualRefunds, indexPath.row < refunds.count {
