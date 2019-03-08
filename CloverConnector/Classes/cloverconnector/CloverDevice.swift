@@ -11,7 +11,7 @@ import Foundation
     import UIKit
     public typealias ImageClass = UIImage
     func ImagePNGRepresentation(_ image: ImageClass) -> Data? {
-        return UIImagePNGRepresentation(image)
+        return image.pngData()
     }
 #else
     import AppKit
