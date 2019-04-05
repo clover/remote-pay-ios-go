@@ -423,6 +423,7 @@ extension CLVModels {
       public var avsResult: CLVModels.Payments.AVSResult? = nil
       public var cardholderName: String?
       public var token: String?
+      public var applicationIdentifier: String?
       
       public func encode(with aCoder: NSCoder) {
         aCoder.encode(paymentRef, forKey: "paymentRef")
@@ -442,6 +443,7 @@ extension CLVModels {
         aCoder.encode(avsResult?.rawValue, forKey: "avsResult")
         aCoder.encode(cardholderName, forKey: "cardholderName")
         aCoder.encode(token, forKey: "token")
+        aCoder.encode(applicationIdentifier, forKey: "applicationIdentifier")
       }
       
       required public init(coder aDecoder: NSCoder) {
@@ -472,6 +474,7 @@ extension CLVModels {
         }
         cardholderName = aDecoder.decodeObject(forKey: "cardholderName") as? String
         token = aDecoder.decodeObject(forKey: "token") as? String
+        applicationIdentifier = aDecoder.decodeObject(forKey: "applicationIdentifier") as? String
       }
       
       override public init() {}
@@ -498,6 +501,7 @@ extension CLVModels {
         avsResult <- map["avsResult"]
         cardholderName <- map["cardholderName"]
         token <- map["token"]
+        applicationIdentifier <- map["applicationIdentifier"]
       }
     }
     
@@ -1325,6 +1329,8 @@ extension CLVModels {
         
         /// Information about the card used for credit/debit card payments
         public var cardTransaction: CLVModels.Payments.CardTransaction?
+      
+        public var cvmResult: CLVModels.Payments.CvmResult?
         
         /// Amount record as a service charge
         public var serviceCharge: CLVModels.Payments.ServiceChargeAmount?
@@ -1371,6 +1377,7 @@ extension CLVModels {
             aCoder.encode(result?.rawValue, forKey: "result")
             aCoder.encode(cardTransaction, forKey: "cardTransaction")
             aCoder.encode(serviceCharge, forKey: "serviceCharge")
+            aCoder.encode(cvmResult, forKey: "cvmResult")
             aCoder.encode(taxRates, forKey: "taxRates")
             aCoder.encode(refunds, forKey: "refunds")
             aCoder.encode(note, forKey: "note")
@@ -1403,6 +1410,7 @@ extension CLVModels {
             }
             cardTransaction = aDecoder.decodeObject(forKey: "cardTransaction") as? CLVModels.Payments.CardTransaction
             serviceCharge = aDecoder.decodeObject(forKey: "serviceCharge") as? CLVModels.Payments.ServiceChargeAmount
+            cvmResult = aDecoder.decodeObject(forKey: "cvmResult") as? CLVModels.Payments.CvmResult
             taxRates = aDecoder.decodeObject(forKey: "taxRates") as? [CLVModels.Payments.PaymentTaxRate]
             refunds = aDecoder.decodeObject(forKey: "refunds") as? [CLVModels.Payments.Refund]
             note = aDecoder.decodeObject(forKey: "note") as? String
@@ -1441,6 +1449,7 @@ extension CLVModels {
             result <- map["result"]
             cardTransaction <- map["cardTransaction"]
             serviceCharge <- map["serviceCharge"]
+            cvmResult <- map["cvmResult"]
             taxRates <- map["taxRates.elements"]
             refunds <- map["refunds.elements"]
             note <- map["note"]
