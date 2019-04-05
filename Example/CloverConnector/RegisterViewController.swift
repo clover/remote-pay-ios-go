@@ -10,11 +10,12 @@ import Foundation
 import UIKit
 import GoConnector
 
-class RegisterViewController:UIViewController, POSOrderListener, POSStoreListener, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate{
+class RegisterViewController:UIViewController, POSOrderListener, POSStoreListener, UITableViewDataSource, UITableViewDelegate, UICollectionViewDataSource, UICollectionViewDelegate, UITextFieldDelegate{
     
     @IBOutlet weak var currentOrderListItems: UITableView!
     @IBOutlet weak var currentOrderView: UIView!
     @IBOutlet weak var storeView: UIView!
+    @IBOutlet weak var txtSignatureThreshold: UITextField!
     var startingPoint:CGRect?
     fileprivate var store:POSStore?
     @IBOutlet weak var subTotalLabel: UILabel!
@@ -43,11 +44,15 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         
         store?.addCurrentOrderListener(self)
         store?.addStoreListener(self)
+        txtSignatureThreshold.delegate = self
         
         startingPoint = currentOrderView.frame
         
         (UIApplication.shared.delegate as? AppDelegate)?.cloverConnectorListener?.viewController = self
         //UILongPressGestureRecognizer(target: currentOrderListItems, action: #selector(handleLongPress))
+        let tap = UITapGestureRecognizer.init(target: self, action: #selector(endEditing))
+        tap.cancelsTouchesInView = false
+        self.view.addGestureRecognizer(tap)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -315,6 +320,9 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
         if let cloverConnector = (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector {
             currentOrder.pendingPaymentId = String(arc4random())
             let sr = SaleRequest(amount:currentOrder.getTotal(), externalId: currentOrder.pendingPaymentId!)
+            if FLAGS.signatureThreshold > -1{
+                sr.signatureThreshold = FLAGS.signatureThreshold
+            }
             // below are all optional
             sr.allowOfflinePayment = store?.transactionSettings.allowOfflinePayment
             sr.approveOfflinePaymentWithoutPrompt = store?.transactionSettings.approveOfflinePaymentWithoutPrompt
@@ -361,6 +369,9 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
             currentOrder.pendingPaymentId = String(arc4random())
             
             let ar = AuthRequest(amount: currentOrder.getTotal(), externalId: currentOrder.pendingPaymentId!)
+            if FLAGS.signatureThreshold > -1{
+                ar.signatureThreshold = FLAGS.signatureThreshold
+            }
             // below are all optional
             ar.allowOfflinePayment = store?.transactionSettings.allowOfflinePayment
             ar.approveOfflinePaymentWithoutPrompt = store?.transactionSettings.approveOfflinePaymentWithoutPrompt
@@ -399,5 +410,21 @@ class RegisterViewController:UIViewController, POSOrderListener, POSStoreListene
             store.newOrder()
             updateTotals()
         }
+    }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if let value = (textField.text as NSString?)?.replacingCharacters(in: range, with: string){
+            if value == ""{
+                FLAGS.signatureThreshold = -1
+            }else{
+                FLAGS.signatureThreshold = Int(value) ?? 0
+            }
+        }
+        
+        return true
+    }
+    
+    @objc func endEditing(){
+        self.view.endEditing(true)
     }
 }

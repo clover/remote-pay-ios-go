@@ -60,6 +60,9 @@ class ManualRefundViewController:UIViewController, UITableViewDelegate, UITableV
         
         if let amtText = refundAmount.text, let amt:Int = Int(amtText) {
             let request = ManualRefundRequest(amount: amt, externalId: String(arc4random()))
+            if FLAGS.signatureThreshold > -1{
+                request.signatureThreshold = FLAGS.signatureThreshold
+            }
             (UIApplication.shared.delegate as? AppDelegate)?.cloverConnector?.manualRefund(request)
         }
         

@@ -133,6 +133,9 @@ public class PreAuthViewController:UIViewController, UITableViewDelegate, UITabl
             let externalId = String(arc4random())
             (UIApplication.shared.delegate as? AppDelegate)?.cloverConnectorListener?.preAuthExpectedResponseId = externalId
             let par = PreAuthRequest(amount: amt, externalId: externalId)
+            if FLAGS.signatureThreshold > -1{
+                par.signatureThreshold = FLAGS.signatureThreshold
+            }
             // below are all optional
             if let enablePrinting = store?.transactionSettings.cloverShouldHandleReceipts {
                 par.disablePrinting = !enablePrinting

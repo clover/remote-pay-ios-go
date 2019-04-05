@@ -29,6 +29,7 @@ struct FLAGS {
     static var isCloverGoMode = false
     static var is350ReaderInitialized = false
     static var is450ReaderInitialized = false
+    static var signatureThreshold = -1
 }
 
 struct SHARED {
