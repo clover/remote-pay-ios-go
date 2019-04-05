@@ -228,6 +228,17 @@ public class CloverGoConnector : NSObject, ICloverGoConnector, CardReaderDelegat
             transactionDelegate = TransactionDelegateImpl(connectorListener: self.connectorListener, transactionType: .tokenize)
         }
         
+        if let tr = transactionRequest as? TransactionRequest, let transactionDelegateImpl = transactionDelegate as? TransactionDelegateImpl{
+
+          if let signatureThreshold = tr.signatureThreshold{
+              if signatureThreshold < tr.amount{
+                    transactionDelegateImpl.signatureRequired = true    
+               }
+            }  
+        }
+
+
+        
         let paymentModes = self.getAvailablePaymentModes()
         if paymentModes.count > 1 {
             connectorListener?.onMultiplePaymentModesAvailable(paymentModes: paymentModes)
@@ -826,6 +837,8 @@ class TransactionDelegateImpl : NSObject, TransactionDelegate {
     
     var lastTransactionResult : TransactionResult?
     
+    var signatureRequired : Bool = false
+    
     init(connectorListener: ICloverGoConnectorListener?, transactionType:CLVGoTransactionType?) {
         self.connectorListener = connectorListener
         self.transactionType = transactionType
@@ -883,8 +896,9 @@ class TransactionDelegateImpl : NSObject, TransactionDelegate {
     func onTransactionResponse(transactionResponse: TransactionResult) {
         self.lastTransactionResult = transactionResponse
         let cvmResult = EnumerationUtil.CvmResult_toEnum(type: transactionResponse.cvmResult ?? "")
-        if cvmResult == .SIGNATURE {
+        if cvmResult == .SIGNATURE || signatureRequired {
             connectorListener?.onSignatureRequired()
+            signatureRequired = false
         } else {
             if transactionType != .tokenize {
                 connectorListener?.onSendReceipt()
@@ -912,12 +926,16 @@ class TransactionDelegateImpl : NSObject, TransactionDelegate {
             }
             cardTransaction.cardholderName = transactionResponse.cardHolderName
             
+            cardTransaction.applicationIdentifier = transactionResponse.applicationIdentifier
+            
             let payment = CLVModels.Payments.Payment()
             payment.id = transactionResponse.paymentId
             payment.amount = transactionResponse.amountCharged
             payment.taxAmount = transactionResponse.taxAmount
             payment.tipAmount = transactionResponse.tipAmount
             payment.externalPaymentId = transactionResponse.externalPaymentId
+            
+            payment.cvmResult = EnumerationUtil.CvmResult_toEnum(type: transactionResponse.cvmResult ?? "")
             
             payment.order = order
             payment.cardTransaction = cardTransaction
