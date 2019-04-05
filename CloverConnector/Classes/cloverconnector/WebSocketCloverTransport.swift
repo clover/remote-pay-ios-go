@@ -109,7 +109,7 @@ class WebSocketCloverTransport: CloverTransport {
                         debugPrint("websocket is disconnected: " + error.localizedDescription)
                         
                         for obs in strongSelf.observers {
-                            obs.onDeviceError(.CONNECTION_ERROR, int: error.code, cause: error, message: error.localizedDescription)
+                            obs.onDeviceError(.CONNECTION_ERROR, int: error._code, cause: error, message: error.localizedDescription)
                         }
                     } else {
                         debugPrint("websocket is disconnected")
