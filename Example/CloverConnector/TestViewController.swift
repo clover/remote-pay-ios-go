@@ -213,30 +213,33 @@ public class TestViewController: UIViewController, UITableViewDelegate, UITableV
             task.resume()
         }
         if let data = loadData {
-            
-            let json:JSON = JSON(data: data)
-            if let jsonCases = json[JSON_KEYS.CASES].array {
-                self.caseRunner = CaseRunner(jsonCases)
-                self.caseRunner?.onTestStarted = {
-                    (cs:Case) -> Void in
-                    if(!self.cases.contains(cs)) {
-                        self.cases.add(cs)
-                        DispatchQueue.main.async{
+            do{
+                let json:JSON = try JSON(data: data)
+                if let jsonCases = json[JSON_KEYS.CASES].array {
+                    self.caseRunner = CaseRunner(jsonCases)
+                    self.caseRunner?.onTestStarted = {
+                        (cs:Case) -> Void in
+                        if(!self.cases.contains(cs)) {
+                            self.cases.add(cs)
+                            DispatchQueue.main.async{
+                                self.testResultsTable.reloadData()
+                            }
+                        }
+                    }
+                    self.caseRunner?.onTestEnded = {
+                        (cs:Case) -> Void in
+                        DispatchQueue.main.async {
                             self.testResultsTable.reloadData()
                         }
                     }
-                }
-                self.caseRunner?.onTestEnded = {
-                    (cs:Case) -> Void in
-                    DispatchQueue.main.async {
-                        self.testResultsTable.reloadData()
+                    if(autoRun) {
+                        self.caseRunner?.start()
+                    } else {
+                        self.caseRunner?.register()
                     }
                 }
-                if(autoRun) {
-                    self.caseRunner?.start()
-                } else {
-                    self.caseRunner?.register()
-                }
+            }catch{
+                
             }
         }
         
@@ -550,9 +553,14 @@ class TestResponseCloverConnector : ResponseCloverConnector {
             let expectedResponse = expectedResponse {
             debugPrint("response is: " + jsonString)
             
-            let match = compare(expectedResponse, within: JSON(data: data))
-            self.testCase.response = jsonString
-            self.testCase.done( match)
+            do{
+                let jSon = try JSON(data: data)
+                let match = compare(expectedResponse, within: jSon)
+                self.testCase.response = jsonString
+                self.testCase.done( match)
+            }catch{
+                
+            }
         } else {
             self.testCase.done((false,"Couldn't compare"))
         }
