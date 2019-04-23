@@ -30,18 +30,16 @@ class OAuthViewController: UIViewController, UIWebViewDelegate {
     func loadAuthorizationRequest()
     {
         let responseType = "code"
-        let redirectURL = "clovergooauth://oauthresult"
         
-        var authorizationURL = "https://dev14.dev.clover.com/oauth/authorize?"
+        var authorizationURL = "https://stg1.dev.clover.com/oauth/authorize?"
         authorizationURL += "response_type=\(responseType)&"
         authorizationURL += "client_id=\(CLIENT_ID)&"
-        authorizationURL += "redirect_uri=\(redirectURL)"
         
         let request = URLRequest(url: NSURL(string: authorizationURL)! as URL)
         webViewForOAuth.loadRequest(request)
     }
     
-    private func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
+    func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebView.NavigationType) -> Bool {
         if (request.url?.host == "oauthresult") {
             extractParametersForRestCall(url: (request.url)!)
         }
@@ -62,7 +60,7 @@ class OAuthViewController: UIViewController, UIWebViewDelegate {
     ///   - code: received from redirect Url
     func restCallToGetToken(code: String)
     {
-        var urlString = NSString(format: "https://dev14.dev.clover.com/oauth/token?")
+        var urlString = NSString(format: "https://stg1.dev.clover.com/oauth/token?")
         urlString = "\(urlString)&client_id=" as NSString
         urlString = "\(urlString)\(CLIENT_ID)" as NSString
         urlString = "\(urlString)&client_secret=" as NSString
