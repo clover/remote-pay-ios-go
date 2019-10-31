@@ -33,6 +33,10 @@
 	<string>1</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
+	<key>NSBluetoothAlwaysUsageDescription</key>
+	<string>Access to Bluetooth is required for wireless card readers</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>Access to Bluetooth is required for wireless card readers</string>
 	<key>NSCameraUsageDescription</key>
 	<string>$(PRODUCT_NAME) camera use for QR code pairing</string>
 	<key>NSMicrophoneUsageDescription</key>

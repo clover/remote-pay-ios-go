@@ -307,7 +307,6 @@
 				607FACCD1AFB9204008FA782 /* Frameworks */,
 				607FACCE1AFB9204008FA782 /* Resources */,
 				A3BFB62B8451F330D0854C2B /* [CP] Embed Pods Frameworks */,
-				CABFBDBA46A0BFBE2CAB177E /* [CP] Copy Pods Resources */,
 				7EC6DF3A1D90474700D852EF /* Embed Frameworks */,
 				7E00D8271DB47FAF00486F3D /* Embed App Extensions */,
 			);
@@ -343,6 +342,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 				Base,
 			);
@@ -397,7 +397,7 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${PODS_ROOT}/CloverGoSDK/clovergoclient.framework",
 				"${PODS_ROOT}/CloverGoSDK/CloverGoReaderSDK.framework",
@@ -424,22 +424,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		CABFBDBA46A0BFBE2CAB177E /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-CloverConnector_Example/Pods-CloverConnector_Example-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -638,13 +623,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q993233M8T;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = CloverConnector/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				OTHER_LDFLAGS = (
@@ -652,7 +637,6 @@
 					"-ObjC",
 					"-all_load",
 					"-lstdc++",
-					"-l\"stdc++.6.0.9\"",
 					"-framework",
 					"\"AVFoundation\"",
 					"-framework",
@@ -698,13 +682,13 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Q993233M8T;
-				ENABLE_BITCODE = YES;
+				ENABLE_BITCODE = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = CloverConnector/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MODULE_NAME = ExampleApp;
 				OTHER_LDFLAGS = (
@@ -712,7 +696,6 @@
 					"-ObjC",
 					"-all_load",
 					"-lstdc++",
-					"-l\"stdc++.6.0.9\"",
 					"-framework",
 					"\"AVFoundation\"",
 					"-framework",
