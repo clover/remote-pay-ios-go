@@ -8,7 +8,7 @@ Version: 3.2.1
 This SDK allows your iOS-based Point-of-Sale (POS) system to communicate with a Clover® payment device and process payments. 
 
 It includes the SDK and an example POS. To work with the project effectively, you will need:
-* XCode 9.3.0+  
+* XCode 11.1
 * iOS 9.0 and above on your device  
 * Cocoapods 
   
@@ -70,6 +70,8 @@ This section will provide both high-level and detailed steps in getting started 
 ### OAuth Flow
 To integrate with Clover Go devices, you will need to initialize the `CloverGoDeviceConfiguration` object with the right initialization values. This includes the **access token** that you retrieve by going through the OAuth flow. Below is a guide through the OAuth flow.
 
+The access token is generated for a specific merchant employee in order to provide user context for a given payment transaction.
+
 1. Go to your **App**’s **Settings** on the [Sandbox Dev Dashboard](https://sandbox.dev.clover.com/developers/). Make sure to save your **App ID** and **App Secret** somewhere; you’ll need them for later.
 ![oauth1](/images/oauth1.png)
 
@@ -123,9 +125,6 @@ To integrate with Clover Go devices, you will need to initialize the `CloverGoDe
 
 3. Update your project dependencies by running `pod install`.
 
-##### Note:
-Set swift_version to 4.2 for your pods if you run into incompatibility issues, and make sure to check out the branch for Swift 4.2.
-
 #### Xcode Steps
 1. Close any current Xcode sessions and open `CloverConnector.xcworkspace`.
 2. Set your `Enable Bitcode` setting to **false** for following:
@@ -154,7 +153,7 @@ Set swift_version to 4.2 for your pods if you run into incompatibility issues, a
 - **How do I generate an OAuth token in prod?**
 
    Follow the same steps that were taken to generate the OAuth token for the sandbox environment but now use `clover.com`. More info [here](https://docs.clover.com/clover-platform/docs/using-oauth-20).
-- **I want to publish my Clover Go Android/iOS app!**
+- **I want to publish my Clover Go Android/iOS app to Clover's App Market!**
 
    Clover Go developers cannot publish their app to Clover’s App Market because it will not work for any merchant as the app is not meant to be installed on Clover devices like Mini and Flex. The only exception is if your app’s type is strictly for the web. In all other cases, you will need to create a separate app and go through a different [App Approval process](https://docs.clover.com/clover-platform/docs/clover-app-approval-process) to get the app reviewed.
 - **I’m getting an invalid credentials response.**
@@ -165,9 +164,11 @@ Set swift_version to 4.2 for your pods if you run into incompatibility issues, a
    Please make sure that your Clover Go reader is on and that your Android or Apple device has bluetooth on.
 - **I’ve tried everything and my app is still running into issues when attempting a transaction in Prod.**
 
-   Please make sure your app has disabled Customer R/W, Employees W and enabled the rest of the Permissions. Btw, if you've recently changed your app’s Permissions settings, you will need to uninstall and reinstall the app, and re-generate the access token. This is because earlier tokens you have will only work for older requested permissions.
+   Please check if you are using a Production reader by ensuring that there is no "Development" text on your device. A sandbox reader will have the word "Development" on the device, while a production reader will not.
+   
+   If you have the correct reader, please make sure your app has disabled Customer R/W, Employees W and enabled the rest of the Permissions. Btw, if you've recently changed your app’s Permissions settings, you will need to uninstall and reinstall the app, and re-generate the access token. This is because earlier tokens you have will only work for older requested permissions.
 
-   If our suggestion above does not work, we strongly encourage you to use your sandbox API key and secret to experiment with our sample app, to ensure that you understand how to accomplish certain implementations.
+   If our suggestions above do not work, we strongly encourage you to use your sandbox API key and secret to experiment with our sample app, to ensure that you understand how to accomplish certain implementations.
 
 ## Developer XCode iOS Project Setup
 ```
