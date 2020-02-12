@@ -111,8 +111,9 @@ The access token is generated for a specific merchant employee in order to provi
 
    **Note**: If you get an “Unknown Client ID” message, check that you don’t include any spaces in the URL and visit the URL again.
 
-### Running the Sample App
+## Developer XCode iOS Project Setup
 
+### Running the Sample App
 #### Prerequisites
 1. Clone the SDK, go into the Example folder and check out the branch for Swift 5:
 
@@ -149,37 +150,6 @@ The access token is generated for a specific merchant employee in order to provi
     }
 ```
 
-### FAQ
-- **How do I generate an OAuth token in prod?**
-
-   Follow the same steps that were taken to generate the OAuth token for the sandbox environment but now use `clover.com`. More info [here](https://docs.clover.com/clover-platform/docs/using-oauth-20).
-- **I want to publish my Clover Go Android/iOS app to Clover's App Market!**
-
-   Clover Go developers cannot publish their app to Clover’s App Market because it will not work for any merchant as the app is not meant to be installed on Clover devices like Mini and Flex. The only exception is if your app’s type is strictly for the web. In all other cases, you will need to create a separate app and go through a different [App Approval process](https://docs.clover.com/clover-platform/docs/clover-app-approval-process) to get the app reviewed.
-- **I’m getting an invalid credentials response.**
-
-   Please consult with your DevRel representative to make sure that your API key and secret tokens are correct. If they are, please try uninstalling and reinstalling your app from your test merchant.
-- **I have the correct API key and secret but I still can’t connect to the reader.**
-
-   Please make sure that your Clover Go reader is on and that your Android or Apple device has bluetooth on.
-- **I’ve tried everything and my app is still running into issues when attempting a transaction in Prod.**
-
-   Please check if you are using a Production reader by ensuring that there is no "Development" text on your device. A sandbox reader will have the word "Development" on the device, while a production reader will not.
-   
-   If you have the correct reader, please make sure your app has disabled Customer R/W, Employees W and enabled the rest of the Permissions. Btw, if you've recently changed your app’s Permissions settings, you will need to uninstall and reinstall the app, and re-generate the access token. This is because earlier tokens you have will only work for older requested permissions.
-
-   If our suggestions above do not work, we strongly encourage you to use your sandbox API key and secret to experiment with our sample app, to ensure that you understand how to accomplish certain implementations.
-
-## Developer XCode iOS Project Setup
-```
-add pod 'GoConnector', '3.0.0' in your PODFILE in target
-For example -
-platform :ios, '9.0'
-use_frameworks!
-target 'CloverConnector_Example' do
-pod 'GoConnector', '~> 3.0.0'
-end
-```
 ### Leveraging SDK within your application
 #### 1. In your ```AppDelegate.swift``` file declare the following...
 ``` import GoConnector
@@ -332,3 +302,23 @@ public func onConfirmPaymentRequest(_ request: ConfirmPaymentRequest) {
     }
 ```
 
+### FAQ
+- **How do I generate an OAuth token in prod?**
+
+   Follow the same steps that were taken to generate the OAuth token for the sandbox environment but now use `clover.com`. More info [here](https://docs.clover.com/clover-platform/docs/using-oauth-20).
+- **I want to publish my Clover Go Android/iOS app to Clover's App Market!**
+
+   Clover Go developers cannot publish their app to Clover’s App Market because it will not work for any merchant as the app is not meant to be installed on Clover devices like Mini and Flex. The only exception is if your app’s type is strictly for the web. In all other cases, you will need to create a separate app and go through a different [App Approval process](https://docs.clover.com/clover-platform/docs/clover-app-approval-process) to get the app reviewed.
+- **I’m getting an invalid credentials response.**
+
+   Please consult with your DevRel representative to make sure that your API key and secret tokens are correct. If they are, please try uninstalling and reinstalling your app from your test merchant.
+- **I have the correct API key and secret but I still can’t connect to the reader.**
+
+   Please make sure that your Clover Go reader is on and that your Android or Apple device has bluetooth on.
+- **I’ve tried everything and my app is still running into issues when attempting a transaction in Prod.**
+
+   Please check if you are using a Production reader by ensuring that there is no "Development" text on your device. A sandbox reader will have the word "Development" on the device, while a production reader will not.
+   
+   If you have the correct reader, please make sure your app has disabled Customer R/W, Employees W and enabled the rest of the Permissions. Btw, if you've recently changed your app’s Permissions settings, you will need to uninstall and reinstall the app, and re-generate the access token. This is because earlier tokens you have will only work for older requested permissions.
+
+   If our suggestions above do not work, we strongly encourage you to use your sandbox API key and secret to experiment with our sample app, to ensure that you understand how to accomplish certain implementations.
