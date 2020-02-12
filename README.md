@@ -8,10 +8,10 @@ Version: 3.3.14
 This SDK allows your iOS-based Point-of-Sale (POS) system to communicate with a Clover® payment device and process payments. 
 
 It includes the SDK and an example POS. To work with the project effectively, you will need:
-* XCode 10.3  
+* XCode 11.1
 * iOS 10.0 and above on your device  
 * Cocoapods 
-  
+
 To experience transactions end-to-end from the merchant and customer perspectives, we also recommend ordering a [Clover Go DevKit](http://cloverdevkit.com/collections/devkits/products/clover-all-in-one-developer-kit)
   
 The SDK enables your custom mobile point-of-sale (POS) to accept card present, EMV compliant payment transactions. 
@@ -33,50 +33,123 @@ Clover Go supports two types of card readers: a magnetic stripe, EMV chip-and-si
 * **Partial Auth** - A partial authorization. The payment gateway may return a partial authorization if the transaction amount exceeds the customer’s credit or debit card limit.  
 * **Tip Adjust** - A transaction in which a merchant takes or edits a tip after the customer’s card has been processed (i.e., after the initial Auth transaction).
 
-## Getting Started
-This section will provide some quick steps to get started with the SDK. To integrate with Clover Go devices you will need initialize the CloverGoDeviceConfiguration object with the right initialization values and that includes the accesstoken that you retreive by going through the OAuth flow. You will need to follow these initial steps
+# Getting Started
 
-### Initial Setup  
-**1. Create Developer Account:** Go to the Clover sandbox developer portal at https://sandbox.dev.clover.com/developers/ and create a developer account.  
-![developer_account](/images/developer-account.png)  
-**2. Create a new application:** Log into developer portal and create a new app - enter app name, unique package name, and check all the clover permissions your application will require to function properly.  
-![create_app](/images/app_create.png)  
-**3. Application Settings/Credentials:** Once your application is created you can note down the App ID and Secret which will be required in your code for OAuth flow.  
-![appid_secret](/images/appid_secret.png)  
-**4.Provide re-direct URL for your OAuth flow:** Enter the redirect URL where Clover should redirect the authorization response to in the site URL field in the Web Configuration settings. The default OAuth response should be "Code".  
-![app_redirect](/images/app_redirect.png)  
-**Note:** The developer portal does not currently accept non-http(s) URL schemes. If you have a custom URL scheme for native iOS and Android applications (such as myPaymentApp://clovergoauthresponse), send an email to Clovergo-Integrations@firstdata.com with your App ID and redirect URL request.  
-  
-**5. Set app permissions:** Your application will require Clover permissions to work correctly. Set your permissions by going to Settings, then Required Permissions menu.    
-![app_permissions](/images/app_permissions.png) 
-  
-**6. Setup your unique application id:** Provide a unique application id for your application, you can use your package name or any identifier that uniquely identifies the transactions of your application. Set this up in the Semi-integrated App section of your application settings.  
-![app_remoteid](/images/app_remoteid.png)  
-  
-Please make sure that your application bundle id is the same as the one defined in this field.
-  
-### OAuth Flow  
-This section describes the OAuth flow steps to get the access token required to initialize the CloverGoDeviceConfiguration object.  
+This section will provide both high-level and detailed steps in getting started with the SDK.
 
-![oauth_flow](/images/oauth_flow.png)  
-**Step 1.** Invoke the Clover Authorize URL from your pos application using the App ID of your application (Step #3 above). This action will prompt the user to log into clover merchant account, once successfuly logged in they will need to approve the app for the first inital login. Authorize URL for Sandbox Environment: https://sandbox.dev.clover.com/oauth/authorize?client_id={app_id}&response_type=code  
-**Step 2.** The user will be redirected to the redirect URL set in step 4 above.    
-**Step 3.** Parse the URI data to get the Merchant ID, Employee ID, Client ID and Code.  
-**Step 4.** Make a REST call that includes the Client ID (it's the app id), secret, and Code from your backend server to get the access token. https://sandbox.dev.clover.com/oauth/token?client_id={appId}&client_secret={appSecret}&code={codeUrlParam}  
-**Note** Please note that the sample application as part of this project provides a hosted service for Step 4. Use your own such service to execute this step.  
-**Step 5.** Parse the response of step 4 and retrieve the access token. The access token provides the Merchant and Employee context to the SDK, all transactions processed will be under this context.  
-  
-  
+## High-Level View of the Integration Process
+1. Create a sandbox developer account to test the sample app included with the SDK.
+
+    **Note**: You’ll need to request for a sandbox API key and secret to process transactions with your Go Devkit. You can request these values from the DevRel team via dev@clover.com.
+
+2. Apply the same steps you’ve learned from testing the sample app to test your own app.
+
+   **Note**: You can use the same Sandbox API key and secret from step 1.
+
+3. Once your app is ready to be released to production, your app will need to go through Clover Go’s QA review.
+4. When your sandbox app is approved by the Clover Go Q&A team, you will need to create a new prod developer account and register your application.
+5. Your prod account and prod app then goes through the Clover Go App Approval process. This is a relatively quick process where the DevRel team does the following:
+
+   - Reviews and verifies the information submitted for your developer profile.
+   - Ensures that your app’s Requested Permissions do not include Customer Read, Write permissions and Employee Write permissions, but includes everything else.
+   - Ensures that your app is not published.
+
+6. Once you have successfully completed the Clover Go App Approval process, you can now request for a production API key and secret from the DevRel team to make live transactions!
+
+
+## Tips on Integrating with the Sample App
+
+### Initial Setup
+1. **Create Developer Account**: [Go to the Clover sandbox developer portal](https://sandbox.dev.clover.com/developers/) and create a developer account.
+![1](/images/1.png)
+
+2. **Create a new application**: Log into your developer portal and create a new app.
+![2](/images/2.png)
+![2a](/images/2a.png)
+
+### OAuth Flow
+To integrate with Clover Go devices, you will need to initialize the `CloverGoDeviceConfiguration` object with the right initialization values. This includes the **access token** that you retrieve by going through the OAuth flow. Below is a guide through the OAuth flow.
+
+The access token is generated for a specific merchant employee in order to provide user context for a given payment transaction.
+
+1. Go to your **App**’s **Settings** on the [Sandbox Dev Dashboard](https://sandbox.dev.clover.com/developers/). Make sure to save your **App ID** and **App Secret** somewhere; you’ll need them for later.
+![oauth1](/images/oauth1.png)
+
+2. Change the App Type to be REST Clients > **Web**.
+![oauth2](/images/oauth2.png)
+
+3. Make sure that your app has *disabled* Customer Read/Write, Employees Write and enabled the rest of the Permissions in **App Settings** > **Requested Permissions**.
+![oauth3](/images/oauth3.png)
+
+   **Warning**: Failure to set these permissions accordingly will lead to an invalid access token, which will prevent the Clover Go SDK from being initialized.
+
+4. Edit your app’s REST Configuration. The Site URL should be your app’s URL. But if you don’t have one set up yet, you can just use `https://sandbox.dev.clover.com` for now. Make sure the Default OAuth Response is **CODE**.
+![oauth4](/images/oauth4.png)
+
+   **Note**: The developer portal does not currently accept non-http(s) URL schemes. If you have a custom URL scheme for native iOS and Android applications (such as myPaymentApp://clovergoauthresponse), send an email to `Clovergo-Integrations@firstdata.com` with your App ID and redirect URL request.
+
+5. Click the **Market Listing** tab and then on **Preview in App Market**.
+![oauth5a](/images/oauth5a.png)
+
+   **Preview In App Market** opens the app preview page as your test merchant:
+![oauth5b](/images/oauth5b.png)
+
+6. If the app is not installed for your test merchant, click **Connect** and then **Accept** to install the app. If the app is installed, click **Open App**. Either of these steps will open a browser tab with a URL containing a **CODE** parameter: 
+
+   `https://sandbox.dev.clover.com/?merchant_id={MERCHANT_ID}1&employee_id={EMPLOYEE_ID}&client_id={CLIENT_ID}&code={CODE}`
+![oauth6](/images/oauth6.png)
+
+   Save the **CODE** value somewhere.
+
+7. Pass in the **App ID**, **App Secret**, and **CODE** you saved earlier into the following URL: 
+
+   `https://sandbox.dev.clover.com/oauth/token?client_id={APP_ID}&client_secret={APP_SECRET}&code={CODE}`
+
+   (do not include the curly braces).
+
+8. Visit that URL in your browser, and you should be provided with your access token 🎉. 
+
+   **Note**: If you get an “Unknown Client ID” message, check that you don’t include any spaces in the URL and visit the URL again.
+
 ## Developer XCode iOS Project Setup
+
+### Running the Sample App
+#### Prerequisites
+1. Clone the SDK, go into the Example folder and check out the branch for Swift 5:
+
+       git clone https://github.com/clover/remote-pay-ios-go.git
+       cd remote-pay-ios-go/Example
+       git checkout CloverGo_Swift5.0
+2. Ensure that the following dependencies in your `Podfile` are set to the right versions:
+
+       pod 'Starscream', :git => 'https://github.com/daltoniam/Starscream.git', :tag => '3.0.5'pod 'GoConnector', '3.3.5'
+
+3. Update your project dependencies by running `pod install`.
+
+#### Xcode Steps
+1. Close any current Xcode sessions and open `CloverConnector.xcworkspace`.
+2. Set your `Enable Bitcode` setting to **false** for following:
+
+   -- **Project Target** (CloverConnector > CloverConnector_Example > Build Options > Enable Bitcode = No)
+
+   -- **Pod CloverGoSDK** (Pods > CloverGoSDK > Build Settings > Build Options > Enable Bitcode = No)
+   ![xcode](/images/xcode.png)
+
+   -- **Pod GoConnector** (Pods > GoConnector > Build Settings > Build Options > Enable Bitcode = No)
+3. In `ViewController.swift`, set your **accessToken**, **apiKey**, and **secret** in the following code block:
+
 ```
-add pod 'GoConnector', '3.0.0' in your PODFILE in target
-For example -
-platform :ios, '10.0'
-use_frameworks!
-target 'CloverConnector_Example' do
-pod 'GoConnector', '~> 3.3.7'
-end
+   override func viewDidLoad() {
+        super.viewDidLoad()
+        PARAMETERS.accessToken = "Access token that you generated via the OAuth flow earlier"
+        PARAMETERS.apiKey = "Get this value from your DevRel representative"
+        PARAMETERS.secret = "Get this value from your DevRel representative"
+        if let savedEndpoint = UserDefaults.standard.string(forKey: WS_ENDPOINT) {
+            endpointTextField.text = savedEndpoint
+        }
+    }
 ```
+
 ### Leveraging SDK within your application
 #### 1. In your ```AppDelegate.swift``` file declare the following...
 ``` import GoConnector
@@ -229,3 +302,23 @@ public func onConfirmPaymentRequest(_ request: ConfirmPaymentRequest) {
     }
 ```
 
+### FAQ
+- **How do I generate an OAuth token in prod?**
+
+   Follow the same steps that were taken to generate the OAuth token for the sandbox environment but now use `clover.com`. More info [here](https://docs.clover.com/clover-platform/docs/using-oauth-20).
+- **I want to publish my Clover Go Android/iOS app to Clover's App Market!**
+
+   Clover Go developers cannot publish their app to Clover’s App Market because it will not work for any merchant as the app is not meant to be installed on Clover devices like Mini and Flex. The only exception is if your app’s type is strictly for the web. In all other cases, you will need to create a separate app and go through a different [App Approval process](https://docs.clover.com/clover-platform/docs/clover-app-approval-process) to get the app reviewed.
+- **I’m getting an invalid credentials response.**
+
+   Please consult with your DevRel representative to make sure that your API key and secret tokens are correct. If they are, please try uninstalling and reinstalling your app from your test merchant.
+- **I have the correct API key and secret but I still can’t connect to the reader.**
+
+   Please make sure that your Clover Go reader is on and that your Android or Apple device has bluetooth on.
+- **I’ve tried everything and my app is still running into issues when attempting a transaction in Prod.**
+
+   Please check if you are using a Production reader by ensuring that there is no "Development" text on your device. A sandbox reader will have the word "Development" on the device, while a production reader will not.
+   
+   If you have the correct reader, please make sure your app has disabled Customer R/W, Employees W and enabled the rest of the Permissions. Btw, if you've recently changed your app’s Permissions settings, you will need to uninstall and reinstall the app, and re-generate the access token. This is because earlier tokens you have will only work for older requested permissions.
+
+   If our suggestions above do not work, we strongly encourage you to use your sandbox API key and secret to experiment with our sample app, to ensure that you understand how to accomplish certain implementations.
