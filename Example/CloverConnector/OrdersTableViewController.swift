@@ -133,6 +133,16 @@ class OrdersTableViewController : UITableViewController, POSStoreListener, POSOr
                 
                 let uvc = UIAlertController(title: "Modify Payment", message: "", preferredStyle: .alert)
                 
+                uvc.addAction(UIAlertAction(title: "Get payment details", style: .default, handler: { (aa) in
+                    uvc.dismiss(animated: true, completion: nil)
+                    if let externalPayId = payment.externalPaymentId{
+                        let request = RetrievePaymentRequest(externalPayId)
+                        (self.cloverConnector as? CloverGoConnector)?.retrievePayment(request)
+                    }
+                    
+                    
+                }))
+                
                 uvc.addAction(UIAlertAction(title: "Void", style: .default, handler: { (aa) in
                     uvc.dismiss(animated: true, completion: nil)
                     let vpr = VoidPaymentRequest(orderId: payment.orderId, paymentId: payment.paymentId, voidReason: .USER_CANCEL)
