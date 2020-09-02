@@ -9,6 +9,7 @@
 import Foundation
 import clovergoclient
 import CloverGoReaderSDK
+import ObjectMapper
 
 public class CloverGoConnector : NSObject, ICloverGoConnector, CardReaderDelegate {
 
@@ -807,7 +808,19 @@ public class CloverGoConnector : NSObject, ICloverGoConnector, CardReaderDelegat
     }
     
     public func retrievePayment(_ _request: RetrievePaymentRequest) {
-        debugPrint("Not supported with CloverGo Connector")
+        cloverGo.getPaymentByExternalPaymentId(extPaymentId: _request.externalPayentId, success: { (jsonString) in
+            if let payments = Mapper<CLVModels.Payments.Payment>().mapArray(JSONString: jsonString), payments.count > 0 {
+                let resultCode = payments.first?.result?.rawValue == ResultCode.SUCCESS.rawValue ? ResultCode.SUCCESS : ResultCode.FAIL
+                let paymentResponse = RetrievePaymentResponse(success: true, result: resultCode, queryStatus: QueryStatus.FOUND, payment: payments.first, externalPaymentId: payments.first?.externalPaymentId)
+                self.connectorListener?.onRetrievePaymentResponse(paymentResponse)
+            }else{
+                let paymentErrResponse = RetrievePaymentResponse(success: false, result: ResultCode.FAIL, queryStatus: QueryStatus.NOT_FOUND, payment: nil, externalPaymentId: _request.externalPayentId)
+                self.connectorListener?.onRetrievePaymentResponse(paymentErrResponse)
+            }
+        }) { (error) in
+            let paymentErrResponse = RetrievePaymentResponse(success: false, result: ResultCode.FAIL, queryStatus: QueryStatus.NOT_FOUND, payment: nil, externalPaymentId: _request.externalPayentId)
+            self.connectorListener?.onRetrievePaymentResponse(paymentErrResponse)
+        }
     }
     
     public func retrieveDeviceStatus(_ _request: RetrieveDeviceStatusRequest) {
