@@ -751,8 +751,14 @@ public class CloverConnectorListener : NSObject, ICloverConnectorListener, UIAle
     public func onRetrievePaymentResponse(_ response: RetrievePaymentResponse) {
         switch response.queryStatus {
         case .FOUND:
-            if let st = response.payment?.cardTransaction?.state {
-                showMessage("payment found for: " + (response.externalPaymentId ?? "unk") + ". status: " + st.rawValue)
+            if let _ = response.payment?.cardTransaction?.state, let payment = response.payment {
+                let paymentJSONString = payment.toJSONString() ?? ""
+                let alertController = UIAlertController(title: "Payment Details", message: paymentJSONString, preferredStyle: .alert)
+                let okAction = UIAlertAction(title: NSLocalizedString("OK", comment: "OK action"), style: .default, handler: nil)
+                alertController.addAction(okAction)
+                
+                self.viewController?.present(alertController, animated:true, completion:nil)
+                
             } else {
                 showMessage("payment found for: " + (response.externalPaymentId ?? "unk") + ". status: UNKNOWN")
             }
