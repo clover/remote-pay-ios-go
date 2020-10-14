@@ -1,5 +1,5 @@
 
-![Clover](https://camo.githubusercontent.com/6c829b55aa7851e726e5fc0fd70448a0c00427b2/68747470733a2f2f7777772e636c6f7665722e636f6d2f6173736574732f696d616765732f7075626c69632d736974652f70726573732f636c6f7665725f7072696d6172795f677261795f7267622e706e67)
+![Clover](https://www.clover.com/static/media/clover-logo.4204a79c.svg)
 
 # Clover SDK for iOS POS Integration 
 ## Version
