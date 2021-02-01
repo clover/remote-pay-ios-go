@@ -51,7 +51,9 @@ class OAuthViewController: UIViewController, UIWebViewDelegate {
         let codeFromRecievedUrl = url.query?.components(separatedBy: "code=").last
         print("codeFromRecievedUrl: \(String(describing: codeFromRecievedUrl))")
         
-        restCallToGetToken(code: codeFromRecievedUrl!)
+        if let code = codeFromRecievedUrl{
+            restCallToGetToken(code: code)
+        }
     }
     
     /// Make a rest call to get the access token
