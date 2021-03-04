@@ -8,7 +8,7 @@ target 'CloverConnector_Example' do
     # Defining it here in the PodFile overrides the podspec dependency, which isn't allowed to specify a specific location and branch
     pod 'Starscream', :git => 'https://github.com/daltoniam/Starscream.git', :tag => '3.0.5'
 
-  pod 'GoConnector', '3.3.10'
+  pod 'GoConnector', '3.3.11'
 
 
 end
