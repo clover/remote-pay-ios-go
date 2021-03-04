@@ -3,12 +3,12 @@
 
 # Clover SDK for iOS POS Integration 
 ## Version
-Version: 3.3.10  
+Version: 3.3.11  
 ## Overview
 This SDK allows your iOS-based Point-of-Sale (POS) system to communicate with a Clover® payment device and process payments. 
 
 It includes the SDK and an example POS. To work with the project effectively, you will need:
-* XCode 11.4
+* XCode 12.2
 * iOS 10.0 and above on your device  
 * Cocoapods 
   
